@@ -1,3 +1,5 @@
+using APIUsage.Core;
+using APIUsage.Data.Contract;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -25,6 +27,11 @@ namespace APIUsageTracker
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddSingleton<IConfiguration>(Configuration);
+            Global.ConnectionString = Configuration.GetConnectionString("connectionString");
+            Global.TokenList = Configuration.GetValue<string>("Variables:TokenList");
+
+            services.AddScoped<IAPIUsageRepository, IAPIUsageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -37,11 +44,11 @@ namespace APIUsageTracker
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute();
             });
         }
     }
