@@ -31,6 +31,7 @@ namespace APIUsageTracker
             services.AddSingleton<IConfiguration>(Configuration);
             Global.ConnectionString = Configuration.GetConnectionString("connectionString");
             Global.TokenList = Configuration.GetValue<string>("Variables:TokenList");
+            Global.CountThreshold = Configuration.GetValue<int>("Variables:CountThreshold");
 
             services.AddScoped<IAPIUsageRepository, APIUsageRepository>();
         }

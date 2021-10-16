@@ -22,7 +22,7 @@ namespace APIUsage.Data.Implementation
             {
                 using (SqlConnection con = new SqlConnection(Global.ConnectionString))
                 {
-                    string query = @"SELECT * FROM APIUsageLogs WHERE CreatedAt >= @Startdate and UniqueIdentifier=@token";
+                    string query = @"SELECT * FROM APIUsageLogs WHERE CreatedAt >= @Startdate and Token=@token";
                     if (con.State == ConnectionState.Closed)
                         con.Open();
 
@@ -38,8 +38,6 @@ namespace APIUsage.Data.Implementation
 
         public int SaveCall(Core.APIUsage apiCall)
         {
-            //Logger.LogInfo("Inside log name enquiry transaction");
-
             try
             {
                 using (SqlConnection con = new SqlConnection(Global.ConnectionString))
@@ -52,8 +50,7 @@ namespace APIUsage.Data.Implementation
             }
             catch (SqlException sEx)
             {
-                //Logger.LogCritical("An error occurred here.....");
-                throw sEx;
+                return 0;
             }
         }
 

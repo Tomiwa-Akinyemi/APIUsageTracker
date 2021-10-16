@@ -36,6 +36,27 @@ namespace APIUsage.Service
             var totalAPICall = new APIUsageRepository().GetTotalCallsByToken(token);
             apiCallMonth = totalAPICall.Where(c => c.CreatedAt.Year == year && c.CreatedAt.Month == month).ToList();
             double apiCountMonth = apiCallMonth.Count();
+            //now we have the count get the band value
+            double costPerThousand = 0;
+            int countThreshold = Global.CountThreshold;
+
+            if (apiCountMonth > 0 && apiCountMonth < 1000000)
+            {
+                costPerThousand = 5;
+            }
+            else if (apiCountMonth > 1000000 && apiCountMonth < 10000000)
+            {
+                costPerThousand = 4.2;
+            }
+            else
+            {
+                costPerThousand = 3.5;
+            }
+            //using the band properties calculate the cost
+            double countPerThousand = Convert.ToDouble(Math.Ceiling(apiCountMonth / countThreshold));
+            double totalCharge = countPerThousand * costPerThousand;
+
+            response = new CalculateCostResponse() { IsSuccessful = true, MonthlyCharge = totalCharge, TotalNoOfCalls = apiCountMonth, ResponseMessage = "Total Charge Gotten" };
 
             return response;
         }
@@ -88,7 +109,7 @@ namespace APIUsage.Service
             catch (Exception ex)
             {
                 //log exception message
-                response = new APILogResponse() { IsSuccessful = false, ResponseMessage = string.Format(token + "and " +ex.Message)};
+                response = new APILogResponse() { IsSuccessful = false, ResponseMessage = "System Error"};
             }
 
             return response;
