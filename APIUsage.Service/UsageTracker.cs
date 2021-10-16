@@ -32,13 +32,10 @@ namespace APIUsage.Service
 
             #endregion InputValidation
 
-            List<Core.APIUsage> requestList = new List<Core.APIUsage>();
-
+            List<Core.APIUsage> apiCallMonth = new List<Core.APIUsage>();
             var totalAPICall = new APIUsageRepository().GetTotalCallsByToken(token);
-
-            requestList = totalAPICall.Where(c => c.CreatedAt.Year == year && c.CreatedAt.Month == month).ToList();
-
-            double totalAPICount = requestList.Count();
+            apiCallMonth = totalAPICall.Where(c => c.CreatedAt.Year == year && c.CreatedAt.Month == month).ToList();
+            double apiCountMonth = apiCallMonth.Count();
 
             return response;
         }
@@ -85,13 +82,13 @@ namespace APIUsage.Service
                 else
                 {
                     response.IsSuccessful = false;
-                    response.ResponseMessage = "Token not configured";
+                    response.ResponseMessage = "Access denied";
                 }
             }
             catch (Exception ex)
             {
                 //log exception message
-                response = new APILogResponse() { IsSuccessful = false, ResponseMessage = "System Error"};
+                response = new APILogResponse() { IsSuccessful = false, ResponseMessage = string.Format(token + "and " +ex.Message)};
             }
 
             return response;

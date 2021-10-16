@@ -22,7 +22,7 @@ namespace APIUsage.Data.Implementation
             {
                 using (SqlConnection con = new SqlConnection(Global.ConnectionString))
                 {
-                    string query = @"SELECT * FROM APIRequestLogs WHERE CreatedAt > @Startdate and UniqueIdentifier=@token";
+                    string query = @"SELECT * FROM APIUsageLogs WHERE CreatedAt >= @Startdate and UniqueIdentifier=@token";
                     if (con.State == ConnectionState.Closed)
                         con.Open();
 
@@ -46,7 +46,7 @@ namespace APIUsage.Data.Implementation
                 {
                     if (con.State == ConnectionState.Closed)
                         con.Open();
-                    var a = con.Query<int>("LogDirectCreditTransactionFull", this.SetInsertParameters(apiCall), commandType: CommandType.StoredProcedure);
+                    var a = con.Query<int>("LogAPICall", this.SetInsertParameters(apiCall), commandType: CommandType.StoredProcedure);
                     return 1;
                 }
             }
