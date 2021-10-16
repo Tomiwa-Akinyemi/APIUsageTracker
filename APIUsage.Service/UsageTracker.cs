@@ -8,8 +8,10 @@ namespace APIUsage.Service
 {
     public class UsageTracker
     {
-        public decimal CalculateCost(string token, int month, int year)
+        public CalculateCostResponse CalculateCost(string token, int month, int year)
         {
+            CalculateCostResponse response = new CalculateCostResponse();
+
             List<Core.APIUsage> requestList = new List<Core.APIUsage>();
 
             var totalAPICall = new APIUsageRepository().GetTotalCallsByToken(token);
@@ -18,13 +20,12 @@ namespace APIUsage.Service
 
             double totalAPICount = requestList.Count();
 
-            return 0;
+            return response;
         }
 
-        public bool LogAPIRequest(string token, out string responseMessage)
+        public APILogResponse LogAPIRequest(string token, string ipAddress)
         {
-            string message = string.Empty;
-            bool isSuccessful = false;
+            APILogResponse response = new APILogResponse();
 
             try
             {
@@ -34,30 +35,29 @@ namespace APIUsage.Service
                     Core.APIUsage apiCall = new Core.APIUsage()
                     {
                         Token = token,
-                        IPAddress = "",
+                        IPAddress = ipAddress,
                         CreatedAt = DateTime.Now
                     };
                     int row = new APIUsageRepository().SaveCall(apiCall);
                     if (row == 1)
                     {
-                        message = "Successful";
-                        isSuccessful = true;
+                        response.IsSuccessful = true;
+                        response.ResponseMessage = "Successful";
                     }
                 }
                 else
                 {
-                    message = "Token not configured";
+                    response.IsSuccessful = false;
+                    response.ResponseMessage = "Token not configured";
                 }
             }
             catch (Exception ex)
             {
-                message = "System error";
-                throw;
+                //log exception message
+                response = new APILogResponse() { IsSuccessful = false, ResponseMessage = "System Error"};
             }
 
-            responseMessage = message;
-
-            return isSuccessful;
+            return response;
         }
     }
 }
