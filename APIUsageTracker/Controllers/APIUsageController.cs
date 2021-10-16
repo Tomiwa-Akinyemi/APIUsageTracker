@@ -40,7 +40,7 @@ namespace APIUsageTracker.Controllers
 
             if (string.IsNullOrEmpty(token))
             {
-                response = new CalculateCostResponse() { IsSuccesful = false, ResponseMessage = "Missing Token", MonthlyCharge = 0, TotalNoOfCalls = 0};
+                response = new CalculateCostResponse() { IsSuccessful = false, ResponseMessage = "Missing Token", MonthlyCharge = 0, TotalNoOfCalls = 0};
                 return Json(response);
             }
             #endregion TokenCheck
