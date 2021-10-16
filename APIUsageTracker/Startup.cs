@@ -1,5 +1,6 @@
 using APIUsage.Core;
 using APIUsage.Data.Contract;
+using APIUsage.Data.Implementation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +32,7 @@ namespace APIUsageTracker
             Global.ConnectionString = Configuration.GetConnectionString("connectionString");
             Global.TokenList = Configuration.GetValue<string>("Variables:TokenList");
 
-            services.AddScoped<IAPIUsageRepository, IAPIUsageRepository>();
+            services.AddScoped<IAPIUsageRepository, APIUsageRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -9,11 +9,13 @@ namespace APIUsageTracker.Controllers
 {
     public class APIUsageController : Controller
     {
+        [Route("APIUsage/Welcome/{username}")]
         public string GetString(string username)
         {
             return "Hello " + username;
         }
 
+        [Route("APIUsage/LogRequest/{IpAddress}")]
         public IActionResult LogAPICall(string IpAddress)
         {
             APILogResponse response = new APILogResponse();
@@ -23,7 +25,7 @@ namespace APIUsageTracker.Controllers
 
             if (string.IsNullOrEmpty(token))
             {
-                response = new APILogResponse() { IsSuccessful = false, ResponseMessage = "Missing token" };
+                response = new APILogResponse() { IsSuccessful = false, ResponseMessage = "Missing token header" };
                 return Json(response);
             }
             #endregion TokenCheck
@@ -32,6 +34,7 @@ namespace APIUsageTracker.Controllers
             return Json(response);
         }
 
+        [Route("APIUsage/CalculateCharge/{month}/{year}")]
         public IActionResult CalculateMonthlyCost(int month, int year)
         {
             CalculateCostResponse response = new CalculateCostResponse();
@@ -40,7 +43,7 @@ namespace APIUsageTracker.Controllers
 
             if (string.IsNullOrEmpty(token))
             {
-                response = new CalculateCostResponse() { IsSuccessful = false, ResponseMessage = "Missing Token", MonthlyCharge = 0, TotalNoOfCalls = 0};
+                response = new CalculateCostResponse() { IsSuccessful = false, ResponseMessage = "Missing token header", MonthlyCharge = 0, TotalNoOfCalls = 0};
                 return Json(response);
             }
             #endregion TokenCheck
