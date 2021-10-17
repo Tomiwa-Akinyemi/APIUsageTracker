@@ -52,27 +52,11 @@ namespace APIUsage.Service
                 return response;
             }
             //now we have the count get the band value
-            double costPerThreshold = 0;
             int countThreshold = Global.CountThreshold;
 
+            double monthlyCharge = FetchCharge(apiCountMonth, countThreshold);
 
-            if (apiCountMonth > 0 && apiCountMonth <= _options.Value.Bands[0].Description)
-            {
-                costPerThreshold = _options.Value.Bands[0].Cost;
-            }
-            else if (apiCountMonth > _options.Value.Bands[0].Description && apiCountMonth <= _options.Value.Bands[1].Description)
-            {
-                costPerThreshold = _options.Value.Bands[1].Cost;
-            }
-            else
-            {
-                costPerThreshold = _options.Value.Bands[2].Cost;
-            }
-            //using the band properties calculate the cost
-            double countPerThreshold = Convert.ToDouble(Math.Ceiling(apiCountMonth / countThreshold));
-            double totalCharge = countPerThreshold * costPerThreshold;
-
-            response = new CalculateCostResponse() { IsSuccessful = true, MonthlyCharge = totalCharge, TotalNoOfCalls = apiCountMonth, ResponseMessage = "Total Charge Gotten" };
+            response = new CalculateCostResponse() { IsSuccessful = true, MonthlyCharge = monthlyCharge, TotalNoOfCalls = apiCountMonth, ResponseMessage = "Total Charge Gotten" };
 
             return response;
         }
@@ -150,5 +134,29 @@ namespace APIUsage.Service
             return splitValues.All(r => byte.TryParse(r, out tempValue));
         }
 
+        public double FetchCharge(double count, int threshold)
+        {
+            double costPerThreshold = 0;
+            double countPerThreshold = 0;
+            double totalCharge = 0;
+
+            if (count > 0 && count <= _options.Value.Bands[0].Description)
+            {
+                costPerThreshold = _options.Value.Bands[0].Cost;
+            }
+            else if (count > _options.Value.Bands[0].Description && count <= _options.Value.Bands[1].Description)
+            {
+                costPerThreshold = _options.Value.Bands[1].Cost;
+            }
+            else
+            {
+                costPerThreshold = _options.Value.Bands[2].Cost;
+            }
+            //using the band properties calculate the cost
+            countPerThreshold = Convert.ToDouble(Math.Ceiling(count / threshold));
+            totalCharge = countPerThreshold * costPerThreshold;
+
+            return totalCharge;
+        }
     }
 }

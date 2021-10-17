@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIUsageTracker", "APIUsage
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIUsage.Core", "APIUsage.Core\APIUsage.Core.csproj", "{143593FB-033D-490D-A4E3-E67D15129136}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIUsage.Service", "APIUsage.Service\APIUsage.Service.csproj", "{7E762976-142B-4923-8F28-A78065BCC905}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIUsage.Service", "APIUsage.Service\APIUsage.Service.csproj", "{7E762976-142B-4923-8F28-A78065BCC905}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIUsage.Data", "APIUsage.Data\APIUsage.Data.csproj", "{DE3AFEC1-1AE9-4D5D-98AE-1641A168D7DF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "APIUsage.Data", "APIUsage.Data\APIUsage.Data.csproj", "{DE3AFEC1-1AE9-4D5D-98AE-1641A168D7DF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIUsageTracker.Test", "APIUsageTracker.Test\APIUsageTracker.Test.csproj", "{5E96B9AB-3671-463A-9290-C66984A9BDE8}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{DE3AFEC1-1AE9-4D5D-98AE-1641A168D7DF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE3AFEC1-1AE9-4D5D-98AE-1641A168D7DF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE3AFEC1-1AE9-4D5D-98AE-1641A168D7DF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5E96B9AB-3671-463A-9290-C66984A9BDE8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5E96B9AB-3671-463A-9290-C66984A9BDE8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5E96B9AB-3671-463A-9290-C66984A9BDE8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5E96B9AB-3671-463A-9290-C66984A9BDE8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

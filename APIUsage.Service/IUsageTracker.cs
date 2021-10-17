@@ -10,5 +10,6 @@ namespace APIUsage.Service
         CalculateCostResponse CalculateCost(string token, int month, int year);
         APILogResponse LogAPIRequest(string token, string ipAddress);
         bool ValidateIPAddress(string ipAddress);
+        double FetchCharge(double count, int threshold);
     }
 }
