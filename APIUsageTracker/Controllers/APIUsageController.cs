@@ -1,4 +1,5 @@
 ﻿using APIUsage.Core;
+using APIUsage.Service;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -9,6 +10,12 @@ namespace APIUsageTracker.Controllers
 {
     public class APIUsageController : Controller
     {
+        private readonly IUsageTracker _usageTracker;
+
+        public APIUsageController(IUsageTracker usageTracker)
+        {
+            _usageTracker = usageTracker;
+        }
         [Route("APIUsage/Welcome/{username}")]
         public string GetString(string username)
         {
@@ -30,7 +37,7 @@ namespace APIUsageTracker.Controllers
             }
             #endregion TokenCheck
 
-            response = new APIUsage.Service.UsageTracker().LogAPIRequest(token, IpAddress);
+            response = _usageTracker.LogAPIRequest(token, IpAddress);
             return Json(response);
         }
 
@@ -48,7 +55,7 @@ namespace APIUsageTracker.Controllers
             }
             #endregion TokenCheck
 
-            response = new APIUsage.Service.UsageTracker().CalculateCost(token, month, year);
+            response = _usageTracker.CalculateCost(token, month, year);
             return Json(response);
         }
     }

@@ -1,13 +1,21 @@
 ﻿using APIUsage.Core;
 using APIUsage.Data.Implementation;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace APIUsage.Service
 {
-    public class UsageTracker
+    public class UsageTracker : IUsageTracker
     {
+        private readonly IOptions<Band> _options;
+
+        public UsageTracker(IOptions<Band> options)
+        {
+            _options = options;
+        }
+
         public CalculateCostResponse CalculateCost(string token, int month, int year)
         {
             CalculateCostResponse response = new CalculateCostResponse();
@@ -36,25 +44,33 @@ namespace APIUsage.Service
             var totalAPICall = new APIUsageRepository().GetTotalCallsByToken(token);
             apiCallMonth = totalAPICall.Where(c => c.CreatedAt.Year == year && c.CreatedAt.Month == month).ToList();
             double apiCountMonth = apiCallMonth.Count();
+
+            if (apiCountMonth == 0)
+            {
+                response = new CalculateCostResponse() { IsSuccessful = true, MonthlyCharge = 0, TotalNoOfCalls = 0, ResponseMessage = "No Charge for this month" };
+
+                return response;
+            }
             //now we have the count get the band value
-            double costPerThousand = 0;
+            double costPerThreshold = 0;
             int countThreshold = Global.CountThreshold;
 
-            if (apiCountMonth > 0 && apiCountMonth < 1000000)
+
+            if (apiCountMonth > 0 && apiCountMonth <= _options.Value.Bands[0].Description)
             {
-                costPerThousand = 5;
+                costPerThreshold = _options.Value.Bands[0].Cost;
             }
-            else if (apiCountMonth > 1000000 && apiCountMonth < 10000000)
+            else if (apiCountMonth > _options.Value.Bands[0].Description && apiCountMonth <= _options.Value.Bands[1].Description)
             {
-                costPerThousand = 4.2;
+                costPerThreshold = _options.Value.Bands[1].Cost;
             }
             else
             {
-                costPerThousand = 3.5;
+                costPerThreshold = _options.Value.Bands[2].Cost;
             }
             //using the band properties calculate the cost
-            double countPerThousand = Convert.ToDouble(Math.Ceiling(apiCountMonth / countThreshold));
-            double totalCharge = countPerThousand * costPerThousand;
+            double countPerThreshold = Convert.ToDouble(Math.Ceiling(apiCountMonth / countThreshold));
+            double totalCharge = countPerThreshold * costPerThreshold;
 
             response = new CalculateCostResponse() { IsSuccessful = true, MonthlyCharge = totalCharge, TotalNoOfCalls = apiCountMonth, ResponseMessage = "Total Charge Gotten" };
 
@@ -63,6 +79,7 @@ namespace APIUsage.Service
 
         public APILogResponse LogAPIRequest(string token, string ipAddress)
         {
+            
             APILogResponse response = new APILogResponse();
 
             #region InputValidation

@@ -9,4 +9,5 @@ namespace APIUsage.Core
         public static string ConnectionString { get; set; }
         public static string TokenList { get; set; }
         public static int CountThreshold { get; set; }
+    }
 }

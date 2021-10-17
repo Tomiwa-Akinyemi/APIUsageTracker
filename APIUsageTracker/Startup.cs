@@ -1,6 +1,7 @@
 using APIUsage.Core;
 using APIUsage.Data.Contract;
 using APIUsage.Data.Implementation;
+using APIUsage.Service;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -33,7 +34,13 @@ namespace APIUsageTracker
             Global.TokenList = Configuration.GetValue<string>("Variables:TokenList");
             Global.CountThreshold = Configuration.GetValue<int>("Variables:CountThreshold");
 
+
+
+            services.Configure<Band>(options => Configuration.GetSection("Bands").Bind(options));
+
+
             services.AddScoped<IAPIUsageRepository, APIUsageRepository>();
+            services.AddScoped<IUsageTracker, UsageTracker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
