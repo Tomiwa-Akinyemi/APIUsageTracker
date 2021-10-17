@@ -1,5 +1,5 @@
 # APIUsageTracker
-RESTful API that tracks the number of times your api is called and calculates a monthly charge based on the number of calls. The calls will be charged in bands for.
+RESTful API that tracks the number of times your api is called and calculates a monthly charge based on the number of calls. The calls will be charged in bands and are configurable in the appsettings file.
 
 # Technology Used
 * C# .NetCore
