@@ -5,6 +5,13 @@ RESTful API that tracks the number of times your api is called and calculates a 
 * C# .NetCore
 * XUnit
 
+# Running the application
+* Create APIUsageTracker database on SSMS
+* Execute db script 
+* Open your application on Visual Studio
+* Input new connection string in appsettings.json file
+* Click F5 to start solution
+
 # Sample Requests and Responses
 [PostmanCollection](https://www.getpostman.com/collections/5cf256b7f070efc5dbba)
 
